@@ -1,0 +1,36 @@
+#include <reg51.h>
+#include "lcd_kp.h"
+#define output P2
+void Delay(void);
+void main(void)
+{
+	unsigned char i;
+//	code	unsigned char x[] = {128,192,238,255,238,192,128,64,17,0,17,64,128};
+	code unsigned char x[] = {
+			128, 153, 177, 199, 219, 234, 246, 253, 
+			255, 253, 246, 234, 219, 199, 177, 153, 
+			128, 103, 79, 57, 37, 22, 10, 3, 
+			0, 3, 10, 22, 37, 57, 79, 103
+	};
+	output = 0;
+	TMOD=0x02;
+//	TH0=-29;
+//	TH0=-71;
+	TH0=-5;
+
+	while(1)
+	{
+		for(i = 0 ; i< sizeof(x);i++)
+		{
+			output = x[i];
+			Delay();
+		}
+	}
+}
+void Delay(void)
+{
+	TR0 = 1;
+	while(TF0==0);
+	TR0=0;
+	TF0=0;
+}
